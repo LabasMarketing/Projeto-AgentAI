@@ -480,8 +480,12 @@ Este projeto foi uma excelente oportunidade para praticar:
 - tratamento de erros em sistemas automatizados reais
 
 ---
+## 🚀 Execução Final
+[![Assista ao vídeo](<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/07adceca-e642-4232-a8ad-316475eed88c" />
+)](https://youtu.be/S33K_E-LdAk)
 
-## 🚀 Como Executar
+
+## 🔧 Como Executar
 
 ### Requisitos
 
