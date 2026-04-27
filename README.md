@@ -481,8 +481,7 @@ Este projeto foi uma excelente oportunidade para praticar:
 
 ---
 ## 🚀 Execução Final
-[![Assista ao vídeo](<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/07adceca-e642-4232-a8ad-316475eed88c" />
-)](https://youtu.be/S33K_E-LdAk)
+[![Assista ao vídeo](https://img.youtube.com/vi/S33K_E-LdAk/0.jpg)](https://youtu.be/S33K_E-LdAk)
 
 
 ## 🔧 Como Executar
