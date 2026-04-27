@@ -4,7 +4,7 @@ Projeto desenvolvido com foco em automatizar o fluxo de candidatura para vagas d
 
 ## 👨‍💻 Desenvolvedor
 
-- Gabriel Labarca Del Bianco
+- [Gabriel Labarca Del Bianco](https://github.com/LabasMarketing)
 
 ---
 
