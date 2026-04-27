@@ -91,6 +91,8 @@ As tabelas principais são:
 - `vagas_analisadas`
 - `candidaturas`
 
+<img width="1919" height="914" alt="image" src="https://github.com/user-attachments/assets/3fb942ac-2af9-4813-adcf-82b44ba889ef" />
+
 #### 📌 Tabela `vagas_analisadas`
 
 Armazena:
@@ -151,6 +153,8 @@ Exemplo de resposta:
   "mensagem": "API rodando"
 }
 ```
+<img width="1919" height="991" alt="image" src="https://github.com/user-attachments/assets/255537f3-6ad4-4f0e-8e63-8c2e0d7ca27e" />
+
 
 #### 📌 `POST /analisar`
 
@@ -375,6 +379,9 @@ Esse fluxo separa bem:
 ---
 
 ### 🤝 Orquestração com n8n
+
+<img width="1919" height="997" alt="image" src="https://github.com/user-attachments/assets/75a09b4d-68eb-4032-93e4-e0550f38b331" />
+
 
 O projeto também foi estruturado para ser integrado com n8n.
 
