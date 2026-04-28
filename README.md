@@ -381,7 +381,7 @@ Esse fluxo separa bem:
 
 ### 🤝 Orquestração com n8n
 
-<img width="1919" height="997" alt="image" src="https://github.com/user-attachments/assets/75a09b4d-68eb-4032-93e4-e0550f38b331" />
+<img width="1919" height="914" alt="584474043-75a09b4d-68eb-4032-93e4-e0550f38b331" src="https://github.com/user-attachments/assets/defd146a-404b-4759-ab46-a10998707705" />
 
 
 O projeto também foi estruturado para ser integrado com n8n.
