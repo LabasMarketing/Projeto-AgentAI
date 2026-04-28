@@ -91,7 +91,8 @@ As tabelas principais são:
 - `vagas_analisadas`
 - `candidaturas`
 
-<img width="1919" height="914" alt="image" src="https://github.com/user-attachments/assets/3fb942ac-2af9-4813-adcf-82b44ba889ef" />
+<img width="1919" height="914" alt="image" src="https://github.com/user-attachments/assets/7e2f22ff-1a59-45e0-a630-4a4bf275e25d" />
+
 
 #### 📌 Tabela `vagas_analisadas`
 
