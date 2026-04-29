@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Schema de Análise de Vaga",
+  "description": "Validação da saída do agente de análise de vagas",
+  "type": "object",
+  "required": [
+    "titulo_vaga",
+    "empresa",
+    "localizacao",
+    "modalidade",
+    "tipo_vaga",
+    "match_score",
+    "classificacao",
+    "should_apply",
+    "motivos_match",
+    "gaps",
+    "resumo_personalizado"
+  ],
+  "properties": {
+    "titulo_vaga": {
+      "type": "string",
+      "description": "Título da vaga",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "empresa": {
+      "type": "string",
+      "description": "Nome da empresa",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "localizacao": {
+      "type": "string",
+      "description": "Localização da vaga",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "modalidade": {
+      "type": "string",
+      "description": "Modalidade de trabalho",
+      "enum": [
+        "Presencial",
+        "Híbrido",
+        "Remoto"
+      ]
+    },
+    "tipo_vaga": {
+      "type": "string",
+      "description": "Tipo de contrato ou vaga",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "match_score": {
+      "type": "integer",
+      "description": "Score de aderência de 0 a 100",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "classificacao": {
+      "type": "string",
+      "description": "Classificação da vaga",
+      "enum": [
+        "aplicar",
+        "revisar",
+        "descartar"
+      ]
+    },
+    "should_apply": {
+      "type": "boolean",
+      "description": "Recomendação: verdadeiro se score >= 55, falso caso contrário"
+    },
+    "motivos_match": {
+      "type": "array",
+      "description": "Lista de pontos positivos de aderência",
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 500
+      },
+      "minItems": 1,
+      "maxItems": 10
+    },
+    "gaps": {
+      "type": "array",
+      "description": "Lista de limitações ou gaps",
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 500
+      },
+      "minItems": 0,
+      "maxItems": 10
+    },
+    "resumo_personalizado": {
+      "type": "string",
+      "description": "Resumo da recomendação customizado",
+      "minLength": 50,
+      "maxLength": 1000
+    }
+  },
+  "additionalProperties": false
+}

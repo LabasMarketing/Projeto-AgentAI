@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+.venv/
+venv_old/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docker / local runtime
+n8n_data/
+outputs/
+
+# Browser automation state
+browser_profiles/
+
+# Personal / local tracking folders
+Acompanhamento/
+
+# Project data with personal information
+data/perfil.json
+data/preferencias.json
+data/vagas/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+

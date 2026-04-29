@@ -1,0 +1,257 @@
+{
+  "name": "Análise de Vaga v1",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "analise-vaga",
+        "responseMode": "responseNode",
+        "showFullResponse": false,
+        "options": {}
+      },
+      "id": "webhook_trigger",
+      "name": "Webhook - Receber Vaga",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "webhookId": "analise-vaga"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extrair vaga do body\nconst vaga = $input.body.vaga || '';\n\nif (!vaga || vaga.trim().length === 0) {\n  return {\n    success: false,\n    error: 'Campo \"vaga\" é obrigatório no body da requisição'\n  };\n}\n\nreturn {\n  success: true,\n  vaga: vaga.trim()\n};"
+      },
+      "id": "validate_input",
+      "name": "Validar Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "filePath": "/data/perfil.json"
+      },
+      "id": "load_perfil",
+      "name": "Carregar Perfil",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 2,
+      "position": [650, 100]
+    },
+    {
+      "parameters": {
+        "filePath": "/data/preferencias.json"
+      },
+      "id": "load_preferencias",
+      "name": "Carregar Preferências",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 2,
+      "position": [650, 200]
+    },
+    {
+      "parameters": {
+        "filePath": "/prompts/avaliador_vagas.txt"
+      },
+      "id": "load_prompt",
+      "name": "Carregar Prompt Template",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse dos arquivos JSON\nconst perfilBuffer = $input.item(0).binary.data;\nconst preferenciaBuffer = $input.item(1).binary.data;\nconst promptBuffer = $input.item(2).binary.data;\nconst vagaData = $input.item(3).json;\n\nconst perfil = JSON.parse(perfilBuffer.toString('utf8'));\nconst preferencias = JSON.parse(preferenciaBuffer.toString('utf8'));\nconst promptTemplate = promptBuffer.toString('utf8');\n\nreturn {\n  perfil,\n  preferencias,\n  promptTemplate,\n  vaga: vagaData.vaga\n};"
+      },
+      "id": "parse_files",
+      "name": "Parse Arquivos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 200]
+    },
+    {
+      "parameters": {
+        "functionCode": "const perfil = $input.json.perfil;\nconst preferencias = $input.json.preferencias;\nconst vaga = $input.json.vaga;\nconst promptTemplate = $input.json.promptTemplate;\n\n// Formatar perfil\nlet perfilFormatado = 'PERFIL PROFISSIONAL:\\n';\nperfilFormatado += `Nome: ${perfil.informacoes_pessoais.nome}\\n`;\nperfilFormatado += `Objetivo: ${perfil.informacoes_pessoais.objetivo}\\n\\n`;\n\nperfilFormatado += 'FORMAÇÃO:\\n';\nperfilFormatado += `Curso: ${perfil.formacao.curso}\\n`;\nperfilFormatado += `Instituição: ${perfil.formacao.instituicao}\\n`;\nperfilFormatado += `Período: ${perfil.formacao.periodo}\\n\\n`;\n\nperfilFormatado += 'STACK TECNOLÓGICO:\\n';\nperfilFormatado += `Linguagens: ${perfil.stack_principal.linguagens.join(', ')}\\n`;\nperfilFormatado += `Frameworks Backend: ${perfil.stack_principal.frameworks_backend.join(', ')}\\n`;\nperfilFormatado += `Frameworks Frontend: ${perfil.stack_principal.frameworks_frontend.join(', ')}\\n`;\nperfilFormatado += `Bancos de Dados: ${perfil.stack_principal.bancos_dados.join(', ')}\\n`;\nperfilFormatado += `Cloud: ${perfil.stack_principal.cloud.join(', ')}\\n`;\nperfilFormatado += `DevOps: ${perfil.stack_principal.devops.join(', ')}\\n\\n`;\n\nperfilFormatado += 'PROJETOS:\\n';\nfor (const proj of perfil.projetos) {\n  perfilFormatado += `- ${proj.nome}: ${proj.descricao}\\n`;\n  perfilFormatado += `  Stack: ${proj.stack.join(', ')}\\n`;\n}\n\nperfilFormatado += '\\nCERTIFICAÇÕES:\\n';\nfor (const cert of perfil.certificacoes) {\n  perfilFormatado += `- ${cert}\\n`;\n}\n\nperfilFormatado += '\\nFORÇAS:\\n';\nfor (const forca of perfil.forcas) {\n  perfilFormatado += `- ${forca}\\n`;\n}\n\n// Formatar preferências\nlet preferenciaFormatada = 'PREFERÊNCIAS DO CANDIDATO:\\n\\n';\n\npreferenciaFormatada += 'CARGOS DESEJADOS:\\n';\nfor (const cargo of preferencias.cargo_desejado) {\n  preferenciaFormatada += `- ${cargo}\\n`;\n}\n\npreferenciaFormatada += '\\nMODALIDADE DE TRABALHO:\\n';\nfor (const mod of preferencias.modalidade) {\n  preferenciaFormatada += `- ${mod}\\n`;\n}\n\npreferenciaFormatada += '\\nLOCALIZAÇÃO:\\n';\nfor (const loc of preferencias.localizacao) {\n  preferenciaFormatada += `- ${loc}\\n`;\n}\n\npreferenciaFormatada += '\\nTIPO DE CONTRATO:\\n';\nfor (const tipo of preferencias.tipo_contrato) {\n  preferenciaFormatada += `- ${tipo}\\n`;\n}\n\npreferenciaFormatada += '\\nPRIORIDADES:\\n';\nfor (const prio of preferencias.prioridades) {\n  preferenciaFormatada += `- ${prio}\\n`;\n}\n\npreferenciaFormatada += '\\nACEITÁVEL:\\n';\nfor (const ace of preferencias.aceitavel) {\n  preferenciaFormatada += `- ${ace}\\n`;\n}\n\npreferenciaFormatada += '\\nEVITAR:\\n';\nfor (const eva of preferencias.evitar) {\n  preferenciaFormatada += `- ${eva}\\n`;\n}\n\n// Montar prompt final\nlet promtFinal = promptTemplate\n  .replace('{{PERFIL}}', perfilFormatado)\n  .replace('{{PREFERENCIAS}}', preferenciaFormatada)\n  .replace('{{VAGA}}', vaga);\n\nreturn {\n  promptFinal,\n  vaga\n};"
+      },
+      "id": "mount_prompt",
+      "name": "Montar Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1050, 200]
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:11434/api/generate",
+        "authentication": "none",
+        "method": "POST",
+        "bodyParametersJson": "{\n  \"model\": \"qwen2.5:3b\",\n  \"prompt\": \"{{$node[\\\"mount_prompt\\\"].json.promptFinal}}\",\n  \"stream\": false,\n  \"temperature\": 0.3\n}"
+      },
+      "id": "call_ollama",
+      "name": "Chamar Ollama",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1250, 200]
+    },
+    {
+      "parameters": {
+        "functionCode": "const resposta = $input.json.response || '';\n\n// Extrair JSON da resposta\nconst inicio = resposta.indexOf('{');\nconst fim = resposta.lastIndexOf('}');\n\nif (inicio === -1 || fim === -1 || inicio >= fim) {\n  return {\n    success: false,\n    error: 'Não consegui extrair JSON válido da resposta do Ollama',\n    resposta_bruta: resposta.substring(0, 200)\n  };\n}\n\nconst jsonStr = resposta.substring(inicio, fim + 1);\n\ntry {\n  const analise = JSON.parse(jsonStr);\n  return {\n    success: true,\n    analise\n  };\n} catch (e) {\n  return {\n    success: false,\n    error: 'Erro ao fazer parse do JSON',\n    erro_detalhes: e.message,\n    json_tentado: jsonStr.substring(0, 200)\n  };\n}"
+      },
+      "id": "parse_response",
+      "name": "Parse Response JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1450, 200]
+    },
+    {
+      "parameters": {
+        "responseCode": 200,
+        "responseData": "={{$node[\"parse_response\"].json.analise}}"
+      },
+      "id": "webhook_response",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1650, 200]
+    },
+    {
+      "parameters": {
+        "responseCode": 400,
+        "responseData": "={{$node[\"parse_response\"].json}}"
+      },
+      "id": "error_response",
+      "name": "Resposta de Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1650, 350]
+    }
+  ],
+  "connections": {
+    "webhook_trigger": {
+      "main": [
+        [
+          {
+            "node": "validate_input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "validate_input": {
+      "main": [
+        [
+          {
+            "node": "load_perfil",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "load_preferencias",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "load_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "load_perfil": {
+      "main": [
+        [
+          {
+            "node": "parse_files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "load_preferencias": {
+      "main": [
+        [
+          {
+            "node": "parse_files",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "load_prompt": {
+      "main": [
+        [
+          {
+            "node": "parse_files",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "parse_files": {
+      "main": [
+        [
+          {
+            "node": "mount_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mount_prompt": {
+      "main": [
+        [
+          {
+            "node": "call_ollama",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "call_ollama": {
+      "main": [
+        [
+          {
+            "node": "parse_response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_response": {
+      "main": [
+        [
+          {
+            "node": "webhook_response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error_response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "timezone": "America/Sao_Paulo"
+  },
+  "id": "workflow_analise_vaga_v1",
+  "staticData": null,
+  "tags": [
+    {
+      "name": "analise-vaga",
+      "id": "1"
+    }
+  ]
+}
