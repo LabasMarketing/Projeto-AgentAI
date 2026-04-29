@@ -1,4 +1,4 @@
-# 🤖 Projeto AgentAI — Automação Inteligente de Busca, Análise e Candidatura em Vagas
+# 🤖 Projeto Auto Employment — Automação Inteligente de Busca, Análise e Candidatura em Vagas
 
 Projeto desenvolvido com foco em automatizar o fluxo de candidatura para vagas de tecnologia, principalmente no LinkedIn, passando por etapas de **coleta**, **extração**, **normalização**, **análise com IA**, **persistência em banco de dados** e **execução de candidatura automática** quando houver match com o perfil do candidato.
 
